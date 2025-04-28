@@ -1,10 +1,10 @@
 import "./global.css";
 import type { Metadata } from "next";
-import { Navbar } from "./components/nav";
+import { Navbar } from "@/app/components/nav";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import Footer from "./components/footer";
-import { baseUrl } from "./sitemap";
+import Footer from "@/app/components/footer";
+import { baseUrl } from "@/app/sitemap";
 import localFont from "next/font/local";
 
 const lxgw = localFont({
@@ -90,7 +90,7 @@ export default function RootLayout({
       className={cx(
         "text-black bg-white dark:text-white dark:bg-black",
         lxgw.className,
-        lxgwMono.className
+        lxgwMono.className,
       )}
     >
       <body className="antialiased max-w-xl mx-4 mt-8 lg:mx-auto">
