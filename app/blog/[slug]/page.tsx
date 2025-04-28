@@ -32,7 +32,7 @@ export async function generateMetadata({
   } = post.metadata;
   const ogImage = image
     ? image
-    : `${baseUrl}/og?title=${encodeURIComponent(title)}`;
+    : `${baseUrl}/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`;
 
   return {
     title,
