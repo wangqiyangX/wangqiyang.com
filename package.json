@@ -9,10 +9,6 @@
     "build:image": "docker buildx build --platform linux/amd64 -t my-blog:latest --load .; docker save -o my-blog.tar my-blog:latest"
   },
   "dependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^22",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
     "@vercel/analytics": "^1",
     "@vercel/speed-insights": "^1",
     "geist": "1.4.2",
@@ -22,18 +18,23 @@
     "postcss": "^8.5.3",
     "react": "^19",
     "react-dom": "^19",
-    "sugar-high": "^0.9.3",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "sugar-high": "^0.9.3"
   },
   "devDependencies": {
     "@content-collections/core": "^0.8.2",
     "@content-collections/mdx": "^0.2.2",
     "@content-collections/next": "^0.2.6",
-    "eslint": "^9.26.0",
+    "eslint": "^9",
     "eslint-config-next": "15.3.2",
+    "@eslint/eslintrc": "^3",
+    "tailwindcss": "^4",
+    "@tailwindcss/postcss": "^4",
     "husky": "^9.1.7",
-    "prettier": "3.5.3"
+    "prettier": "3.5.3",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/node": "^22",
+    "typescript": "^5"
   },
   "packageManager": "pnpm@10.10.0"
 }
