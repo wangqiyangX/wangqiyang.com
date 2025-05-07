@@ -7,6 +7,15 @@ const navItems = {
   "/blog": {
     name: "文章",
   },
+  "/tags": {
+    name: "标签",
+  },
+  "/projects": {
+    name: "项目",
+  },
+  "/about": {
+    name: "关于",
+  },
 };
 
 export function Navbar() {

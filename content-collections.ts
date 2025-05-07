@@ -10,6 +10,28 @@ const posts = defineCollection({
     publishedAt: z.string().date(),
     summary: z.string(),
     image: z.string().optional(),
+    tags: z.array(z.string()).optional(),
+    category: z.string().optional(),
+  }),
+  transform: async (document, context) => {
+    const mdx = await compileMDX(context, document);
+    return {
+      ...document,
+      mdx,
+    };
+  },
+});
+
+const projects = defineCollection({
+  name: "projects",
+  directory: "./content/projects",
+  include: "*.mdx",
+  schema: (z) => ({
+    title: z.string(),
+    publishedAt: z.string().date(),
+    summary: z.string(),
+    image: z.string().optional(),
+    category: z.string().optional(),
   }),
   transform: async (document, context) => {
     const mdx = await compileMDX(context, document);
@@ -21,5 +43,5 @@ const posts = defineCollection({
 });
 
 export default defineConfig({
-  collections: [posts],
+  collections: [posts, projects],
 });

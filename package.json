@@ -5,7 +5,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky"
+    "prepare": "husky",
+    "build:image": "docker buildx build --platform linux/amd64 -t my-blog:latest --load .; docker save -o my-blog.tar my-blog:latest"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4",
@@ -16,6 +17,7 @@
     "@vercel/speed-insights": "^1",
     "geist": "1.4.2",
     "lint-staged": "^15.5.2",
+    "lucide-react": "^0.507.0",
     "next": "^15",
     "postcss": "^8.5.3",
     "react": "^19",

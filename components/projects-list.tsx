@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { formatDate } from "@/app/blog/utils";
-import { allPosts } from "content-collections";
+import { formatDate } from "@/app/utils";
+import { Project } from "content-collections";
 
-export function BlogPosts() {
+export function ProjectsList({ projects }: { projects: Project[] }) {
   return (
     <div>
-      {allPosts
+      {projects
         .sort((a, b) => {
           if (new Date(a.publishedAt) > new Date(b.publishedAt)) {
             return -1;
@@ -22,7 +22,7 @@ export function BlogPosts() {
               <p className="text-neutral-600 dark:text-neutral-400 w-[120px] tabular-nums">
                 {formatDate(post.publishedAt, false)}
               </p>
-              <p className="text-neutral-900 dark:text-neutral-100 tracking-tight">
+              <p className="text-neutral-900 dark:text-neutral-100">
                 {post.title}
               </p>
             </div>

@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
-import { CustomMDX } from "@/app/components/mdx";
-import { formatDate } from "@/app/blog/utils";
+import { CustomMDX } from "@/components/mdx";
+import { formatDate } from "@/app/utils";
 import { baseUrl } from "@/app/sitemap";
 import { allPosts } from "content-collections";
+import Link from "next/link";
 
 export async function generateStaticParams() {
   return allPosts.map((post) => ({
@@ -98,10 +99,19 @@ export default async function Blog({
       <h1 className="title font-semibold text-2xl tracking-tighter">
         {post.title}
       </h1>
-      <div className="flex justify-between items-center mt-2 mb-8 text-sm">
+      <div className="flex justify-start items-center mt-2 mb-8 text-sm gap-2">
         <p className="text-sm text-neutral-600 dark:text-neutral-400">
           {formatDate(post.publishedAt, true)}
         </p>
+        {post.tags?.map((tag) => (
+          <Link
+            key={tag}
+            href={`/tags/${tag}`}
+            className="text-sm text-neutral-600 dark:text-neutral-400"
+          >
+            {"#" + tag}
+          </Link>
+        ))}
       </div>
       <article className="prose">
         <CustomMDX source={post.mdx} />
