@@ -1,11 +1,11 @@
-import { getBlogPosts } from "@/app/blog/utils";
+import { allPosts } from "content-collections";
 
 export const baseUrl = "https://wangqiyang.com";
 
 export default async function sitemap() {
-  const blogs = getBlogPosts().map((post) => ({
-    url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: post.metadata.publishedAt,
+  const blogs = allPosts.map((post) => ({
+    url: `${baseUrl}/blog/${post._meta.path}`,
+    lastModified: post.publishedAt,
   }));
 
   const routes = ["", "/blog"].map((route) => ({

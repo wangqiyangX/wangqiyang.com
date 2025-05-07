@@ -1,13 +1,12 @@
 import { notFound } from "next/navigation";
 import { CustomMDX } from "@/app/components/mdx";
-import { formatDate, getBlogPosts } from "@/app/blog/utils";
+import { formatDate } from "@/app/blog/utils";
 import { baseUrl } from "@/app/sitemap";
+import { allPosts } from "content-collections";
 
 export async function generateStaticParams() {
-  const posts = getBlogPosts();
-
-  return posts.map((post) => ({
-    slug: post.slug,
+  return allPosts.map((post) => ({
+    slug: post._meta.path,
   }));
 }
 
@@ -19,7 +18,7 @@ export async function generateMetadata({
   }>;
 }) {
   const { slug } = await params;
-  const post = getBlogPosts().find((post) => post.slug === slug);
+  const post = allPosts.find((post) => post._meta.path === slug);
   if (!post) {
     return;
   }
@@ -29,7 +28,7 @@ export async function generateMetadata({
     publishedAt: publishedTime,
     summary: description,
     image,
-  } = post.metadata;
+  } = post;
   const ogImage = image
     ? image
     : `${baseUrl}/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`;
@@ -42,7 +41,7 @@ export async function generateMetadata({
       description,
       type: "article",
       publishedTime,
-      url: `${baseUrl}/blog/${post.slug}`,
+      url: `${baseUrl}/blog/${post._meta.path}`,
       images: [
         {
           url: ogImage,
@@ -66,7 +65,7 @@ export default async function Blog({
   }>;
 }) {
   const { slug } = await params;
-  const post = getBlogPosts().find((post) => post.slug === slug);
+  const post = allPosts.find((post) => post._meta.path === slug);
 
   if (!post) {
     notFound();
@@ -81,14 +80,14 @@ export default async function Blog({
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "BlogPosting",
-            headline: post.metadata.title,
-            datePublished: post.metadata.publishedAt,
-            dateModified: post.metadata.publishedAt,
-            description: post.metadata.summary,
-            image: post.metadata.image
-              ? `${baseUrl}${post.metadata.image}`
-              : `/og?title=${encodeURIComponent(post.metadata.title)}`,
-            url: `${baseUrl}/blog/${post.slug}`,
+            headline: post.title,
+            datePublished: post.publishedAt,
+            dateModified: post.publishedAt,
+            description: post.summary,
+            image: post.image
+              ? `${baseUrl}${post.image}`
+              : `/og?title=${encodeURIComponent(post.title)}`,
+            url: `${baseUrl}/blog/${post._meta.path}`,
             author: {
               "@type": "Person",
               name: "启阳的编程手札",
@@ -97,15 +96,15 @@ export default async function Blog({
         }}
       />
       <h1 className="title font-semibold text-2xl tracking-tighter">
-        {post.metadata.title}
+        {post.title}
       </h1>
       <div className="flex justify-between items-center mt-2 mb-8 text-sm">
         <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          {formatDate(post.metadata.publishedAt, true)}
+          {formatDate(post.publishedAt, true)}
         </p>
       </div>
       <article className="prose">
-        <CustomMDX source={post.content} />
+        <CustomMDX source={post.mdx} />
       </article>
     </section>
   );

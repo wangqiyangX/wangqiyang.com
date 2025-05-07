@@ -1,0 +1,82 @@
+---
+title: "Swift 的 @Observable 是个啥？值不值得用？"
+publishedAt: "2025-05-07"
+summary: "简单聊一下 Swift 中的 @Observable。"
+---
+
+Swift 自从引入 SwiftData 和对 SwiftUI 的进一步优化后，数据驱动的 UI 绑定变得越来越“丝滑”了。而在 WWDC 2023 之后，Apple 悄咪咪给我们塞了个超好用的新特性：@Observable。
+
+你可以把它理解成 @Published 和 ObservableObject 的更优雅替代品，但更 Swifty、更轻量，也更自动化。
+
+## 基本用法 ✅
+
+想象一下你有一个 User 模型，在以前的 SwiftUI 里，你可能这么写：
+
+```swift
+class User: ObservableObject {
+    @Published var name: String
+    @Published var age: Int
+
+    init(name: String, age: Int) {
+        self.name = name
+        self.age = age
+    }
+}
+
+```
+
+用了 @Observable 之后呢？变得炒鸡简洁！
+
+```swift
+import Observation
+
+@Observable
+class User {
+    var name: String
+    var age: Int
+
+    init(name: String, age: Int) {
+        self.name = name
+        self.age = age
+    }
+}
+
+```
+
+是不是瞬间清爽了很多？@Published、ObservableObject 都不要写，属性的变化 SwiftUI 会自动观察到，简直是懒人福音（我爱了）。
+
+## 背后的魔法 ✨
+
+@Observable 本质上是个宏（Macro），它在编译时会自动帮你生成观察功能。你不用显式写 objectWillChange.send()，也不用担心忘记给属性加 @Published，一切都封装得妥妥的。
+
+只要你用的是 Swift 5.9+（Xcode 15+），就能直接享用这糖分爆表的语法糖。
+
+## 和 SwiftUI 的联动 👯‍♀️
+
+你可以直接把 @State, @Bindable, 或者 @Environment 等属性绑定到这个模型上，效果一级棒！
+
+```swift
+@State private var user = User(name: "凯阳", age: 24)
+
+var body: some View {
+    TextField("名字", text: $user.name)
+    Stepper("年龄：\(user.age)", value: $user.age)
+}
+
+```
+
+注意这里的 user 是一个 struct 或 class 实例（取决于你怎么设计），但它的属性可以直接绑定，因为 @Observable 已经自动处理了观察逻辑。
+
+## 注意事项 ⚠️
+
+@Observable 只支持 Swift 的原生类型（目前为止），如果你用了一些 Objective-C 的东西，比如 NSObject 或老派 KVO，那还是得乖乖用 @Published。
+
+如果你希望用 struct 作为模型，也可以，但要小心值类型导致的 copy 行为，推荐配合 @State 或 @Bindable。
+
+不能直接作用于 enum！
+
+## 结语 🧠
+
+@Observable 是 Apple 向我们开发者发射的一颗“语法糖炸弹”，让 UI 和数据的绑定变得更加直观、强大且易维护。对比旧时代的 ObservableObject，这波确实是技术债减免 + 可读性飞升的一步。
+
+强烈建议项目重构或新项目直接上 @Observable，爽到飞起 🚀

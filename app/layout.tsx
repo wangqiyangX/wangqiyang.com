@@ -1,11 +1,12 @@
 import "./global.css";
 import type { Metadata } from "next";
 import { Navbar } from "@/app/components/nav";
-import { Analytics } from "@vercel/analytics/react";
+import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Footer from "@/app/components/footer";
 import { baseUrl } from "@/app/sitemap";
 import localFont from "next/font/local";
+import Script from "next/script";
 
 const lxgw = localFont({
   src: [
@@ -26,6 +27,7 @@ const lxgw = localFont({
     },
   ],
   preload: true,
+  variable: "--font-lxgw",
 });
 
 const lxgwMono = localFont({
@@ -47,6 +49,7 @@ const lxgwMono = localFont({
     },
   ],
   preload: true,
+  variable: "--font-lxgwMono",
 });
 
 export const metadata: Metadata = {
@@ -89,9 +92,9 @@ export default function RootLayout({
     <html
       lang="zh"
       className={cx(
-        "text-black bg-white dark:text-white dark:bg-black",
-        lxgw.className,
-        lxgwMono.className,
+        "text-black bg-white dark:text-white dark:bg-black font-sans",
+        lxgw.variable,
+        lxgwMono.variable,
       )}
     >
       <body className="antialiased max-w-xl mx-4 mt-8 lg:mx-auto">
@@ -101,6 +104,10 @@ export default function RootLayout({
           <Footer />
           <Analytics />
           <SpeedInsights />
+          <Script
+            src="http://182.92.194.101:3001/script.js"
+            data-website-id="ab0b7295-ef83-4ba9-867d-8c371ef97d12"
+          />
         </main>
       </body>
     </html>
