@@ -1,8 +1,8 @@
 import { BlogPosts } from "@/components/posts";
 import { allPosts } from "content-collections";
+import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronLeft } from "lucide-react";
 
 export async function generateStaticParams() {
   const tags = allPosts.map((post) => post.tags || []).flat();
@@ -33,10 +33,10 @@ export default async function TagPage({
         href="/tags"
         className="flex items-center gap-2 text-neutral-600 dark:text-neutral-300"
       >
-        <ChevronLeft className="w-4 h-4" />
+        <ChevronLeft className="h-4 w-4" />
         返回
       </Link>
-      <h1 className="font-semibold text-2xl mb-8">标签：{tag}</h1>
+      <h1 className="mb-8 text-2xl font-semibold">标签：{tag}</h1>
       <BlogPosts posts={posts} />
     </section>
   );

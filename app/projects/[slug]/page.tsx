@@ -1,13 +1,13 @@
 import { baseUrl } from "@/app/sitemap";
 import { CustomMDX } from "@/components/mdx";
 import { formatDate } from "@/lib/utils";
-import { allPosts } from "content-collections";
+import { allProjects } from "content-collections";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 export async function generateStaticParams() {
-  return allPosts.map((post) => ({
-    slug: post._meta.path,
+  return allProjects.map((project) => ({
+    slug: project._meta.path,
   }));
 }
 
@@ -19,8 +19,8 @@ export async function generateMetadata({
   }>;
 }) {
   const { slug } = await params;
-  const post = allPosts.find((post) => post._meta.path === slug);
-  if (!post) {
+  const project = allProjects.find((project) => project._meta.path === slug);
+  if (!project) {
     return;
   }
 
@@ -29,7 +29,7 @@ export async function generateMetadata({
     publishedAt: publishedTime,
     summary: description,
     image,
-  } = post;
+  } = project;
   const ogImage = image
     ? image
     : `${baseUrl}/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`;
@@ -42,7 +42,7 @@ export async function generateMetadata({
       description,
       type: "article",
       publishedTime,
-      url: `${baseUrl}/blog/${post._meta.path}`,
+      url: `${baseUrl}/projects/${project._meta.path}`,
       images: [
         {
           url: ogImage,
@@ -58,7 +58,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function Blog({
+export default async function Project({
   params,
 }: {
   params: Promise<{
@@ -66,9 +66,9 @@ export default async function Blog({
   }>;
 }) {
   const { slug } = await params;
-  const post = allPosts.find((post) => post._meta.path === slug);
+  const project = allProjects.find((project) => project._meta.path === slug);
 
-  if (!post) {
+  if (!project) {
     notFound();
   }
 
@@ -81,14 +81,14 @@ export default async function Blog({
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "BlogPosting",
-            headline: post.title,
-            datePublished: post.publishedAt,
-            dateModified: post.publishedAt,
-            description: post.summary,
-            image: post.image
-              ? `${baseUrl}${post.image}`
-              : `/og?title=${encodeURIComponent(post.title)}`,
-            url: `${baseUrl}/blog/${post._meta.path}`,
+            headline: project.title,
+            datePublished: project.publishedAt,
+            dateModified: project.publishedAt,
+            description: project.summary,
+            image: project.image
+              ? `${baseUrl}${project.image}`
+              : `/og?title=${encodeURIComponent(project.title)}`,
+            url: `${baseUrl}/projects/${project._meta.path}`,
             author: {
               "@type": "Person",
               name: "启阳的编程手札",
@@ -97,24 +97,23 @@ export default async function Blog({
         }}
       />
       <h1 className="title text-2xl font-semibold tracking-tighter">
-        {post.title}
+        {project.title}
       </h1>
       <div className="mt-2 mb-8 flex items-center justify-start gap-2 text-sm">
         <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          {formatDate(post.publishedAt, true)}
+          {formatDate(project.publishedAt, true)}
         </p>
-        {post.tags?.map((tag) => (
+        {project.category && (
           <Link
-            key={tag}
-            href={`/tags/${tag}`}
+            href={`/categories/${project.category}`}
             className="text-sm text-neutral-600 dark:text-neutral-400"
           >
-            {"#" + tag}
+            {"#" + project.category}
           </Link>
-        ))}
+        )}
       </div>
       <article className="prose">
-        <CustomMDX source={post.mdx} />
+        <CustomMDX source={project.mdx} />
       </article>
     </section>
   );

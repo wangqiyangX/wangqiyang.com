@@ -111,7 +111,12 @@ export async function GET(req: NextRequest) {
                 fontWeight: 500,
               }}
             >
-              wangqiyang.com
+              wangqiyang.com ｜ 启阳的编程手札 ｜{" "}
+              {new Date().toLocaleDateString("zh-CN", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
             </span>
           </div>
         </div>

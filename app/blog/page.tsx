@@ -1,5 +1,6 @@
 import { BlogPosts } from "@/components/posts";
 import { allPosts } from "content-collections";
+
 export const metadata = {
   title: "文章",
   description: "编程相关的一些笔记。",
@@ -8,7 +9,7 @@ export const metadata = {
 export default function Page() {
   return (
     <section>
-      <h1 className="font-semibold text-2xl mb-8 tracking-tighter">文章</h1>
+      <h1 className="mb-8 text-2xl font-semibold tracking-tighter">文章</h1>
       <BlogPosts posts={allPosts} />
     </section>
   );

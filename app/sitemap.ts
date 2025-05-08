@@ -1,4 +1,4 @@
-import { allPosts } from "content-collections";
+import { allPosts, allProjects } from "content-collections";
 
 export const baseUrl = "https://wangqiyang.com";
 
@@ -8,10 +8,24 @@ export default async function sitemap() {
     lastModified: post.publishedAt,
   }));
 
-  const routes = ["", "/blog", "/tags", "/about", "/projects"].map((route) => ({
-    url: `${baseUrl}${route}`,
+  const projects = allProjects.map((project) => ({
+    url: `${baseUrl}/projects/${project._meta.path}`,
+    lastModified: project.publishedAt,
+  }));
+
+  // Get all unique tags from posts
+  const tags = [...new Set(allPosts.map((post) => post.tags || []).flat())];
+  const tagPages = tags.map((tag) => ({
+    url: `${baseUrl}/tags/${tag}`,
     lastModified: new Date().toISOString().split("T")[0],
   }));
 
-  return [...routes, ...blogs];
+  const routes = ["", "/blog", "/tags", "/about", "/projects", "/rss"].map(
+    (route) => ({
+      url: `${baseUrl}${route}`,
+      lastModified: new Date().toISOString().split("T")[0],
+    }),
+  );
+
+  return [...routes, ...blogs, ...projects, ...tagPages];
 }

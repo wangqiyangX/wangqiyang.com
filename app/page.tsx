@@ -1,5 +1,7 @@
 import { BlogPosts } from "@/components/posts";
-import { allPosts } from "content-collections";
+import { ProjectsList } from "@/components/projects-list";
+import { allPosts, allProjects } from "content-collections";
+
 export default function Page() {
   return (
     <section>
@@ -8,7 +10,16 @@ export default function Page() {
       </h1>
       <p className="mb-4">愿自由之风，吹拂世界。</p>
       <div className="my-8">
-        <BlogPosts posts={allPosts} />
+        <h2 className="mb-4 text-lg font-semibold tracking-tighter">
+          最近文章
+        </h2>
+        <BlogPosts posts={allPosts.slice(0, 3)} />
+      </div>
+      <div className="my-8">
+        <h2 className="mb-4 text-lg font-semibold tracking-tighter">
+          最近项目
+        </h2>
+        <ProjectsList projects={allProjects.slice(0, 3)} />
       </div>
     </section>
   );

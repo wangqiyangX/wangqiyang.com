@@ -6,6 +6,8 @@
 }
 
 :root {
+  --background: #ffffff;
+  --foreground: #171717;
   --sh-class: #2d5e9d;
   --sh-identifier: #354150;
   --sh-sign: #8996a3;
@@ -18,19 +20,20 @@
 }
 
 @theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
   --font-sans: var(--font-lxgw);
   --font-mono: var(--font-lxgwMono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
     --sh-class: #4c97f8;
     --sh-identifier: white;
     --sh-keyword: #f47067;
     --sh-string: #0fa295;
-  }
-  html {
-    color-scheme: dark;
   }
 }
 
@@ -38,10 +41,18 @@ html {
   min-width: 360px;
 }
 
-.prose .anchor {
-  @apply absolute invisible no-underline;
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
 
-  margin-left: -1em;
+.prose {
+  @apply max-w-none;
+}
+
+.prose .anchor {
+  @apply invisible absolute no-underline;
+  margin-left: -1.5em;
   padding-right: 0.5em;
   width: 80%;
   max-width: 700px;
@@ -53,7 +64,7 @@ html {
 }
 
 .prose a {
-  @apply underline transition-all decoration-neutral-400 dark:decoration-neutral-600 underline-offset-2 decoration-[0.1em];
+  @apply text-blue-600 underline decoration-blue-400 decoration-[0.1em] underline-offset-2 transition-all hover:text-blue-800 dark:text-blue-400 dark:decoration-blue-600 dark:hover:text-blue-300;
 }
 
 .prose .anchor:after {
@@ -66,17 +77,17 @@ html {
 }
 
 .prose pre {
-  @apply bg-neutral-50 dark:bg-neutral-900 rounded-lg overflow-x-auto border border-neutral-200 dark:border-neutral-900 py-2 px-3 text-sm;
+  @apply my-6 overflow-x-auto rounded-lg border border-neutral-200 bg-neutral-50 px-5 py-4 text-sm dark:border-neutral-800 dark:bg-neutral-900;
 }
 
 .prose code {
-  @apply px-1 py-0.5 rounded-lg;
+  @apply rounded-md bg-neutral-100 px-1.5 py-0.5 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100;
 }
 
 .prose pre code {
-  @apply p-0;
+  @apply bg-transparent p-0 text-neutral-900 dark:text-neutral-100;
   border: initial;
-  line-height: 1.5;
+  line-height: 1.7;
 }
 
 .prose code span {
@@ -89,35 +100,63 @@ html {
 }
 
 .prose p {
-  @apply my-4 text-neutral-800 dark:text-neutral-200;
+  @apply my-6 leading-7 text-neutral-800 dark:text-neutral-200;
 }
 
 .prose h1 {
-  @apply text-4xl font-medium tracking-tight mt-6 mb-2;
+  @apply mt-8 mb-4 text-4xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100;
 }
 
 .prose h2 {
-  @apply text-xl font-medium tracking-tight mt-6 mb-2;
+  @apply mt-8 mb-4 text-2xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-100;
 }
 
 .prose h3 {
-  @apply text-xl font-medium tracking-tight mt-6 mb-2;
+  @apply mt-6 mb-3 text-xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-100;
 }
 
 .prose h4 {
-  @apply text-lg font-medium tracking-tight mt-6 mb-2;
+  @apply mt-6 mb-3 text-lg font-semibold tracking-tight text-neutral-900 dark:text-neutral-100;
 }
 
 .prose strong {
-  @apply font-medium;
+  @apply font-semibold text-neutral-900 dark:text-neutral-100;
 }
 
 .prose ul {
-  @apply list-disc pl-6;
+  @apply my-6 list-disc space-y-2 pl-6;
 }
 
 .prose ol {
-  @apply list-decimal pl-6;
+  @apply my-6 list-decimal space-y-2 pl-6;
+}
+
+.prose li {
+  @apply text-neutral-800 dark:text-neutral-200;
+}
+
+.prose blockquote {
+  @apply my-6 border-l-4 border-neutral-300 pl-4 italic dark:border-neutral-700;
+}
+
+.prose blockquote p {
+  @apply text-neutral-600 dark:text-neutral-400;
+}
+
+.prose hr {
+  @apply my-8 border-neutral-200 dark:border-neutral-800;
+}
+
+.prose table {
+  @apply my-6 w-full border-collapse;
+}
+
+.prose table th {
+  @apply border-b border-neutral-300 px-4 py-2 text-left font-semibold text-neutral-900 dark:border-neutral-700 dark:text-neutral-100;
+}
+
+.prose table td {
+  @apply border-b border-neutral-200 px-4 py-2 text-neutral-800 dark:border-neutral-800 dark:text-neutral-200;
 }
 
 .prose > :first-child {
@@ -141,13 +180,6 @@ input[type="email"] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-}
-
-table {
-  display: block;
-  max-width: fit-content;
-  overflow-x: auto;
-  white-space: nowrap;
 }
 
 .title {

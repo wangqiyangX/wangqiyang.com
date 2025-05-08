@@ -1,8 +1,8 @@
-import Link from "next/link";
-import Image from "next/image";
-import { highlight } from "sugar-high";
-import React from "react";
 import { MDXContent } from "@content-collections/mdx/react";
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+import { highlight } from "sugar-high";
 
 interface TableData {
   headers: string[];

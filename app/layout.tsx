@@ -1,10 +1,11 @@
 import "./global.css";
-import type { Metadata } from "next";
+import { baseUrl } from "@/app/sitemap";
+import Footer from "@/components/footer";
 import { Navbar } from "@/components/nav";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import Footer from "@/components/footer";
-import { baseUrl } from "@/app/sitemap";
+import type { Metadata } from "next";
+import { ThemeProvider } from "next-themes";
 import localFont from "next/font/local";
 import Script from "next/script";
 
@@ -92,23 +93,26 @@ export default function RootLayout({
     <html
       lang="zh"
       className={cx(
-        "text-black bg-white dark:text-white dark:bg-black font-sans",
+        "font-sans text-black dark:text-white",
         lxgw.variable,
         lxgwMono.variable,
       )}
+      suppressHydrationWarning
     >
-      <body className="antialiased max-w-xl mx-4 mt-8 lg:mx-auto">
-        <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
-          <Navbar />
-          {children}
-          <Footer />
-          <Analytics />
-          <SpeedInsights />
-          <Script
-            src="http://182.92.194.101:3001/script.js"
-            data-website-id="ab0b7295-ef83-4ba9-867d-8c371ef97d12"
-          />
-        </main>
+      <body className="mx-4 mt-8 max-w-xl antialiased lg:mx-auto">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <main className="mt-6 flex min-w-0 flex-auto flex-col px-2 md:px-0">
+            <Navbar />
+            {children}
+            <Footer />
+            <Analytics />
+            <SpeedInsights />
+            <Script
+              src="http://182.92.194.101:3001/script.js"
+              data-website-id="ab0b7295-ef83-4ba9-867d-8c371ef97d12"
+            />
+          </main>
+        </ThemeProvider>
       </body>
     </html>
   );
