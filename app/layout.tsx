@@ -7,7 +7,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import localFont from "next/font/local";
-import Script from "next/script";
 
 const lxgw = localFont({
   src: [
@@ -107,10 +106,6 @@ export default function RootLayout({
             <Footer />
             <Analytics />
             <SpeedInsights />
-            <Script
-              src="http://182.92.194.101:3001/script.js"
-              data-website-id="ab0b7295-ef83-4ba9-867d-8c371ef97d12"
-            />
           </main>
         </ThemeProvider>
       </body>
