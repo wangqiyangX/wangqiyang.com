@@ -1,3 +1,4 @@
+import HandDrawnUnderline from "@/components/hand-drawn-underline";
 import Image from "next/image";
 
 export const metadata = {
@@ -16,7 +17,11 @@ export default function Page() {
         height={100}
         className="my-2 rounded-xl"
       />
-      <p>我叫启阳，是一名iOS开发工程师，喜欢研究技术，喜欢分享，喜欢折腾。</p>
+      <p>
+        我叫启阳，是一名
+        <HandDrawnUnderline text="iOS开发工程师" />
+        ，喜欢研究技术，喜欢分享，喜欢折腾。
+      </p>
       <div className="mt-4 space-y-2">
         <p className="font-semibold">技术栈</p>
         <ul className="list-inside list-disc">
