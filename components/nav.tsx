@@ -13,6 +13,9 @@ const navItems = {
   "/projects": {
     name: "项目",
   },
+  "/archives": {
+    name: "归档",
+  },
   "/about": {
     name: "关于",
   },
