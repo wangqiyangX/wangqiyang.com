@@ -1,6 +1,6 @@
 import { baseUrl } from "@/app/sitemap";
 import { CustomMDX } from "@/components/mdx";
-import { formatDate } from "@/lib/utils";
+import { formatDate } from "@/lib/formatDate";
 import { allProjects } from "content-collections";
 import Link from "next/link";
 import { notFound } from "next/navigation";

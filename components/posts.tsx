@@ -1,4 +1,4 @@
-import { formatDate } from "@/lib/utils";
+import { formatDate } from "@/lib/formatDate";
 import { Post } from "content-collections";
 import * as motion from "motion/react-client";
 import Link from "next/link";
