@@ -1,0 +1,248 @@
+---
+title: "回溯算法"
+publishedAt: "2024-03-12"
+summary: "简单介绍一下回溯算法。"
+---
+
+## 简介
+
+## 策略
+
+### 尝试（Trial）
+
+尝试策略意味着算法会尝试所有可能的路径或选择来找到问题的解。在尝试过程中，算法可能会根据某种规则或启发式方法来选择下一步。例如，在深度优先搜索（DFS）或广度优先搜索（BFS）中，算法会尝试所有可能的分支，直到找到目标解。
+
+### 回退（Backtracking）
+
+回退是一种尝试解决决策问题的算法技术，当算法发现当前的选择不再可能导致问题的解时，它会撤销最后的选择，并返回到上一个决策点。回退算法通常使用递归来实现，每一层递归代表一个决策点。回退算法的关键在于“试错”：它尝试一个可能的解，如果这个解不符合问题的约束，它就回退到上一个决策点，尝试另一个可能的解。例如，在解决八皇后问题时，如果当前行的皇后放置位置会导致冲突，算法会回退并尝试其他列。
+
+### 剪枝（Pruning）
+
+剪枝是一种优化搜索算法的技术，它可以在搜索过程中排除那些不可能导致最优解的分支。剪枝可以显著减少搜索空间，提高算法的效率。
+
+例如，在棋类游戏中，剪枝可以用来排除那些明显会导致劣势的走法。在最优解问题中，如果找到一个解，并且这个解已经比当前已知的最好解还要差，那么就可以剪枝，不再继续搜索这个分支。
+
+## 框架代码
+
+```typescript
+function backtrack(candidate: any[], solution: any[]) {
+  // 如果已经找到了一个有效的解决方案，则可以处理它
+  if (isSolution(candidate)) {
+    processSolution(candidate);
+    return;
+  }
+
+  // 尝试所有可能的候选者
+  for (let next of getNextCandidates(candidate)) {
+    // 为下一个候选者做出选择
+    makeChoice(next);
+    // 进入下一层决策树
+    backtrack(candidate, solution);
+    // 回溯，撤销最后的选择
+    unmakeChoice(next);
+  }
+}
+
+// 检查当前候选者是否构成一个解决方案
+function isSolution(candidate: any[]): boolean {
+  // 实现具体的解决方案检查逻辑
+  return false;
+}
+
+// 处理找到的解决方案
+function processSolution(solution: any[]) {
+  // 实现具体的解决方案处理逻辑
+  console.log(solution);
+}
+
+// 获取下一个可能的候选者列表
+function getNextCandidates(candidate: any[]): any[] {
+  // 实现具体的候选者生成逻辑
+  return [];
+}
+
+// 为候选者做出选择
+function makeChoice(next: any) {
+  // 实现具体的选择逻辑
+}
+
+// 撤销最后的选择
+function unmakeChoice(next: any) {
+  // 实现具体的撤销选择逻辑
+}
+
+// 启动回溯算法
+backtrack([], []);
+```
+
+在这个框架中，candidate 数组用于存储当前构建的候选解决方案，而 solution 数组用于存储最终的解决方案。isSolution 函数用于检查当前候选者是否满足问题的解决方案条件。processSolution 函数用于处理找到的解决方案，例如打印它或将其添加到结果列表中。
+
+getNextCandidates 函数用于生成下一个可能的候选者列表，这是回溯算法的关键部分，因为它决定了算法的搜索空间。makeChoice 和 unmakeChoice 函数分别用于为候选者做出选择和撤销最后的选择，这是回溯算法中“试错”过程的实现。
+
+## 应用
+
+### 全排列问题
+
+**全排列问题是指给定一个数字集合，要求生成这个集合的所有可能的排列组合。**
+
+例如，给定集合 `[1,2,3]`，其全排列为 `[[1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1]]`。
+
+在全排列问题中，我们需要生成给定数组中所有元素的所有可能排列。如果数组中包含重复元素，我们需要注意避免生成重复的排列。
+
+为了减少搜索空间，我们可以使用剪枝操作。
+
+下面是一个使用 TypeScript 实现的考虑了重复元素和剪枝操作的全排列问题解决方法：
+
+```typescript
+function permuteUnique(nums: number[]): number[][] {
+  const result: number[][] = [];
+  nums.sort((a, b) => a - b); // 排序以便于剪枝
+  backtrack([], new Array(nums.length).fill(false));
+  return result;
+  function backtrack(path: number[], used: boolean[]) {
+    if (path.length === nums.length) {
+      result.push([...path]); // 深拷贝当前路径
+      return;
+    }
+    for (let i = 0; i < nums.length; i++) {
+      if (used[i] || (i > 0 && nums[i] === nums[i - 1] && !used[i - 1])) {
+        continue; // 跳过已经使用过的元素，或者跳过重复的元素
+      }
+      // 做选择
+      used[i] = true;
+      path.push(nums[i]);
+      // 递归调用，传入剩余的选择
+      backtrack(path, used);
+      // 撤销选择
+      path.pop();
+      used[i] = false;
+    }
+  }
+}
+// 示例
+const nums = [1, 1, 2];
+const permutations = permuteUnique(nums);
+console.log(permutations);
+```
+
+在这个实现中，我们首先对输入数组`nums`进行排序，这样相同的元素就会被放在一起。然后，我们使用一个`used`数组来跟踪每个元素是否已经在当前路径`path`中使用过。
+在`backtrack`函数中，我们进行以下剪枝操作：
+
+- 如果`used[i]`为`true`，表示当前元素已经在当前路径中使用过，我们跳过它。
+- 如果`i > 0`且`nums[i] === nums[i - 1]`且`!used[i - 1]`，表示我们正在考虑与前一个元素相同的元素，并且前一个元素没有被使用过。这是因为在排序后的数组中，相同的元素是相邻的，我们只需要使用前一个元素来生成排列，因此我们跳过当前的元素。
+  通过这些剪枝操作，我们可以避免生成重复的排列，并且减少搜索空间，提高算法的效率。
+
+**分析**
+
+对于全排列问题，我们分析了两种情况：一种是输入数组中不包含重复元素，另一种是包含重复元素。我们将分别分析这两种情况的时间复杂度和空间复杂度。
+
+**不包含重复元素的情况**
+
+在这种情况下，我们不需要进行剪枝操作，因为每个元素都是唯一的。对于长度为 `n` 的数组，总共有 `n!` （n 的阶乘）个排列。在回溯过程中，每个元素都会被放入排列的开头一次，其余的 `n-1` 个元素会递归地生成排列。因此，时间复杂度为 `O(n!)`。
+空间复杂度主要由递归栈的深度和存储排列的数组决定。递归栈的最大深度为 `n`，因为每次递归都会向路径中添加一个新元素，直到生成一个完整的排列。每个排列都需要 `O(n)` 的空间来存储，因此空间复杂度也是 `O(n!)`。
+
+**包含重复元素的情况**
+
+在这种情况下，我们需要进行剪枝操作以避免生成重复的排列。尽管剪枝操作减少了生成的排列数量，但最坏情况下仍然需要生成所有不重复的排列。因此，时间复杂度仍然是 `O(n!)`。
+空间复杂度与不包含重复元素的情况相同，因为剪枝操作不改变递归的深度，只是减少了递归的次数。空间复杂度仍然是 `O(n!)`。
+
+**总结**
+
+无论是输入数组中是否包含重复元素，全排列问题的时间复杂度和空间复杂度都是 `O(n!)`。这是因为每个排列都需要被生成，并且每个排列都需要 `O(n)` 的空间来存储。尽管剪枝操作减少了搜索空间，但它并没有改变算法的渐进时间复杂度。
+
+### N 皇后问题
+
+在 N×N 的棋盘上放置 N 个皇后，使得它们不会相互攻击（即任何两个皇后都不能处于同一行、同一列或同一斜线上）。
+
+### 组合总和
+
+给定一个候选数字集合[2,3,6,7]和一个目标数字 7，找出所有可能的组合，使得这些数字的和等于目标数字。
+
+如果输入集合中的元素可以被无限次重复选取，并且子集不区分元素顺序，那么我们可以使用回溯算法来解决这个问题。
+
+在这种情况下，我们可以使用一个内部循环来重复选择同一个元素，而不是在递归调用中使用下一个索引。
+下面是一个使用 TypeScript 实现的解决方法：
+
+```typescript
+function combinationSum(candidates: number[], target: number): number[][] {
+  const result: number[][] = [];
+  candidates.sort((a, b) => a - b); // 排序以便于剪枝
+  backtrack([], 0, target);
+  return result;
+  function backtrack(comb: number[], start: number, remain: number) {
+    if (remain === 0) {
+      result.push([...comb]); // 找到一个解决方案
+      return;
+    }
+    for (let i = start; i < candidates.length; i++) {
+      if (candidates[i] > remain) break; // 约束剪枝
+      comb.push(candidates[i]); // 做选择
+      backtrack(comb, i, remain - candidates[i]); // 递归，允许重复使用，所以索引是i
+      comb.pop(); // 撤销选择
+    }
+  }
+}
+// 示例
+const candidates = [2, 3, 6, 7];
+const target = 7;
+const combinations = combinationSum(candidates, target);
+console.log(combinations);
+```
+
+在这个实现中，我们允许在递归调用中使用相同的索引`i`，这意味着我们可以无限次地选择同一个元素。这种方法适用于元素可以重复选取的情况。
+请注意，由于子集不区分元素顺序，我们需要对结果进行去重。在这个实现中，由于我们使用了排序，并且每次递归时都从相同的索引开始，因此不会生成重复的子集。如果输入数组中包含重复元素，排序后的数组会确保相同的元素是相邻的，这样可以避免生成重复的子集。
+时间复杂度和空间复杂度分析：
+
+- 时间复杂度：在最坏的情况下，我们需要生成所有可能的组合，直到它们的和达到目标值。每个元素可以被无限次选取，因此时间复杂度是指数级的，但是在实际应用中，剪枝操作可以显著减少递归的次数。
+- 空间复杂度：主要取决于递归栈的深度和存储结果的数组。递归栈的最大深度是目标值除以最小候选数，因此空间复杂度是`O(target / min(candidates))`。存储结果的数组的空间复杂度是`O(target / min(candidates))`，因为每个组合的长度最多是`target / min(candidates)`。
+
+当输入数组中含有相同元素时，我们需要在算法中实现剪枝操作，以避免生成重复的组合。为了实现这一点，我们可以在递归调用中添加一个条件，以确保不会选择相同的元素多次。
+下面是一个使用 TypeScript 实现的考虑了重复元素和剪枝操作的组合总和问题解决方法：
+
+```typescript
+function combinationSum(candidates: number[], target: number): number[][] {
+  const result: number[][] = [];
+  candidates.sort((a, b) => a - b); // 排序以便于剪枝
+  backtrack([], 0, target);
+  return result;
+  function backtrack(comb: number[], start: number, remain: number) {
+    if (remain === 0) {
+      result.push([...comb]); // 找到一个解决方案
+      return;
+    }
+    for (let i = start; i < candidates.length; i++) {
+      if (i > start && candidates[i] === candidates[i - 1]) {
+        continue; // 跳过重复元素
+      }
+      if (candidates[i] > remain) break; // 约束剪枝
+      comb.push(candidates[i]); // 做选择
+      backtrack(comb, i, remain - candidates[i]); // 递归，允许重复使用，所以索引是i
+      comb.pop(); // 撤销选择
+    }
+  }
+}
+// 示例
+const candidates = [1, 1, 2, 5, 6];
+const target = 8;
+const combinations = combinationSum(candidates, target);
+console.log(combinations);
+```
+
+在这个实现中，我们首先对候选数组进行了排序，这样相同的元素就会被放在一起。然后，在递归函数`backtrack`中，我们添加了一个条件来跳过重复的元素。这个条件是`if (i > start && candidates[i] === candidates[i - 1]) continue;`，它确保了对于重复的元素，我们只会在没有使用前一个重复元素的情况下使用它。
+通过这些剪枝操作，我们可以确保组合总和算法既正确又高效地生成所有不重复的组合。
+
+### 子集问题
+
+给定一个数字集合，如[1,2,3]，返回其所有可能的子集，包括空集。
+
+### 0-1 背包问题
+
+给定一组物品，每个物品有一个价值和一个重量，背包有一个最大容量，找出不超过背包最大容量前提下，价值最大的物品组合。
+
+### 图的着色问题
+
+给定一个无向图和若干种颜色，判断是否能为图的每一个顶点着色
+
+## 参考
+
+[hello 算法](https://www.hello-algo.com/chapter_backtracking/backtracking_algorithm/)

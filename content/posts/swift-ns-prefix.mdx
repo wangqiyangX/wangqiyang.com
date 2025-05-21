@@ -1,0 +1,79 @@
+---
+title: "Swift / Objective-C 里的 NS 到底是啥？"
+publishedAt: "2025-05-07"
+summary: "为啥什么都 NSSomething 的——比如 NSString, NSArray, NSNotification……听起来就像“某种神秘组织”（笑）😆"
+tags: ["Swift"]
+category: "教程"
+---
+
+## 💡 NS 是什么的缩写？
+
+NS 其实是 NeXTSTEP 的缩写。
+
+这个名字来自 Apple 收购之前的 NeXT 公司 —— 史蒂夫·乔布斯在被踢出 Apple 后创立了 NeXT，后来 Apple 把 NeXT 买回来，NeXT 的技术就成为 macOS 和 iOS 的基础。NeXTStep 是他们当时的操作系统。
+
+所以 Apple 的早期 API 就继承了 NeXTStep 的命名风格，前缀就是 NS。
+
+## 📦 常见的 NS 类来自哪？
+
+这些都来自 Foundation 框架，是 macOS / iOS 最底层的基础库之一：
+
+NSString 👉 字符串
+
+NSArray 👉 数组
+
+NSDictionary 👉 字典
+
+NSNotificationCenter 👉 通知中心
+
+NSTimer 👉 定时器
+
+NSData, NSFileManager, NSURL 等等……
+
+它们全都是基于 Objective-C 的类，在 Swift 中仍然能用。
+
+## 🤝 Swift 和 NS 系列的关系
+
+Swift 有了自己的替代类型，比如：
+
+| Objective-C (NS类) | Swift 原生     |
+| ------------------ | -------------- |
+| NSString           | String         |
+| NSArray            | Array          |
+| NSDictionary       | Dictionary     |
+| NSNumber           | Int, Double 等 |
+| NSDate             | Date           |
+
+但为了兼容旧代码、系统 API、跨平台框架等，Swift 还是保留了对 NS 类的访问能力，而且你在用系统 API 的时候还是会频繁接触 NS 开头的类。
+
+## 🧠 小贴士：识别思路
+
+只要你看到 NS 开头的，大概率是 Foundation 的 Obj-C 类
+
+Swift 会自动在后台桥接它们，比如：
+
+```swift
+let swiftStr: String = "Hello"
+let nsStr: NSString = swiftStr as NSString
+```
+
+所以你不需要刻意用 NSString，用原生的 String 就行啦！
+
+## 🎁 彩蛋：还有其他前缀吗？
+
+除了 NS，还会见到：
+
+UI：UIKit（UILabel, UIButton...）
+
+AV：音视频（AVPlayer, AVAudioEngine）
+
+CA：Core Animation（CALayer, CAAnimation）
+
+CF：Core Foundation（CFString, CFArray）底层 C 级别的东西
+
+这些前缀就是代表它们来自不同框架。
+
+## 结论
+
+NS 是历史遗产，满满的时代味道 🌈 不用怕，知道它是 Objective-C 背景下的产物就够了～
+现在写 Swift，尽量用原生类型，比如 String 而不是 NSString，unless you're doing some 🧙 magic interop stuff.
