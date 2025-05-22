@@ -23,7 +23,7 @@ export async function GET() {
   const rssFeed = `<?xml version="1.0" encoding="UTF-8" ?>
   <rss version="2.0">
     <channel>
-        <title>启阳的编程手札</title>
+        <title>启阳</title>
         <link>${baseUrl}</link>
         <description>记录了本人学习编程的所思及所得。</description>
         ${itemsXml}

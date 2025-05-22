@@ -91,7 +91,7 @@ export default async function Project({
             url: `${baseUrl}/projects/${project._meta.path}`,
             author: {
               "@type": "Person",
-              name: "启阳的编程手札",
+              name: "启阳",
             },
           }),
         }}

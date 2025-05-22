@@ -55,15 +55,15 @@ const lxgwMono = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "启阳的编程手札",
-    template: "%s | 启阳的编程手札",
+    default: "启阳",
+    template: "%s | 启阳",
   },
   description: "记录了本人学习编程的所思及所得。",
   openGraph: {
-    title: "启阳的编程手札",
+    title: "启阳",
     description: "记录了本人学习编程的所思及所得。",
     url: baseUrl,
-    siteName: "启阳的编程手札",
+    siteName: "启阳",
     images: [`${baseUrl}/og`],
     locale: "zh_Hans",
     type: "website",

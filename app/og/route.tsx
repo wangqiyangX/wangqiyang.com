@@ -5,7 +5,7 @@ import { join } from "node:path";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const title = searchParams.get("title") || "启阳的编程手札";
+  const title = searchParams.get("title") || "启阳";
   const description = (
     searchParams.get("description") || "记录了本人学习编程的所思及所得。"
   ).slice(0, 50);
@@ -111,7 +111,7 @@ export async function GET(req: NextRequest) {
                 fontWeight: 500,
               }}
             >
-              wangqiyang.com ｜ 启阳的编程手札 ｜{" "}
+              wangqiyang.com ｜ 启阳 ｜{" "}
               {new Date().toLocaleDateString("zh-CN", {
                 year: "numeric",
                 month: "long",

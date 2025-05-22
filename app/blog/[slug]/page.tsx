@@ -91,7 +91,7 @@ export default async function Blog({
             url: `${baseUrl}/blog/${post._meta.path}`,
             author: {
               "@type": "Person",
-              name: "启阳的编程手札",
+              name: "启阳",
             },
           }),
         }}
